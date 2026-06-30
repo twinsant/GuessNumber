@@ -1,11 +1,11 @@
-#include "guessnumber/Logger.hpp"
+#include "guessnumber/base/Logger.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <chrono>
 #include <cstring>
-#include <iomanip>
+
+#include "guessnumber/base/FormatTime.hpp"
 
 Logger::Logger() : _minLevel(LogLevel::INFO), _showFile(true){}
 
@@ -49,11 +49,8 @@ int Logger::log(const char file[], const int line, const LogLevel lvl, const cha
 {
     if(lvl < _minLevel)return 1;
 
-    auto now = std::chrono::system_clock::now();
-    auto time_t_now = std::chrono::system_clock::to_time_t(now);
-    auto output_time = std::localtime(&time_t_now);
     std::ostringstream oss;
-    oss << std::put_time(output_time, "%Y-%m-%d %H:%M:%S");
+    oss << getFormatTime();
 
     std::string fileShowing = _showFile ? std::string("[") + file + ":line " + std::to_string(line) + "] " : "";
     std::string fullLine = "[" + oss.str() + "] [" + getLogLevel(lvl) + "] " + fileShowing + msg + "\n";

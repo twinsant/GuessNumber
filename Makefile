@@ -3,12 +3,13 @@ CXXFLAGS := -std=c++20 -Wall -Wextra
 LDFLAGS :=
 
 SRC_DIR := src
-BUILD_DIR := build
-SRC := $(wildcard $(SRC_DIR)/*.cpp)
+BUILD_DIR := build/obj
+BIN_DIR := build/bin
+SRC := $(shell find $(SRC_DIR)/ -name '*.cpp')
 OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRC))
 DEP := $(OBJ:.o=.d)
 
-TARGET := $(BUILD_DIR)/guessNumber
+TARGET := $(BIN_DIR)/guessNumber
 
 BUILD_TYPE ?= debug
 ifeq ($(BUILD_TYPE), release)
@@ -18,6 +19,7 @@ else
 endif
 
 CXXFLAGS += -I include
+CXXFLAGS += -I third_party
 
 .PHONY : default
 default : all

@@ -1,6 +1,6 @@
-#include "guessnumber/console_io.hpp"
+#include "guessnumber/core/console_io.hpp"
 #include <optional>
-#include "guessnumber/Config.hpp"
+#include "guessnumber/core/model/Config.hpp"
 #include <cstring>
 
 std::optional<int> ConsoleInput::getGuess(){
@@ -41,6 +41,16 @@ bool ConsoleInput::askPlayAgain(){
 void ConsoleOutput::showWelcome(Config config){
     printf("Welcome to a simple game--GuessNumber!\n");
     printf("You are supposed to guess a number between %d and %d! You have %d chance(s) to guess.\n", config.minNum, config.maxNum, config.attempts);
+}
+
+void ConsoleOutput::showRecordBoard(const std::vector<GameRecord> &tops)
+{
+    if (!tops.empty()) {
+        printf("🏆 Hall of Fame (least guesses):\n");
+        for (size_t i = 0; i < tops.size(); ++i) {
+            printf("  No.%ld   %d guess(es), range %d-%d    %s\n", i + 1, tops[i].attempt, tops[i].config.minNum, tops[i].config.maxNum, tops[i].date.c_str());
+        }
+    }
 }
 
 void ConsoleOutput::showTooHigh(int delta)
